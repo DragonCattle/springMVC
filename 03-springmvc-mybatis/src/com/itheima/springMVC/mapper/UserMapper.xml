@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+		namespace:命名空间，用于隔离sql语句，后续有重要作用
+		#{?}:点位符，相当于jdbc的？
+		${?}:字符串拼接指令，如果入参数为普通数据类型{ }内部只写value
+ -->
+<mapper namespace="com.itheima.springMVC.mapper.UserMapper">
+
+	<!-- 
+			
+			id:sql语句的id，语句的唯一标识（要和接口方法名一致）
+			parameterType：输入的参数，数据类型（要和接口方法名一致）
+			resultType：返回的结果类型，这里类型引用的是typeAliases的别名	（要和接口方法名一致）		
+	 -->
+	<select id="getUserById" parameterType="int" resultType="com.itheima.springMVC.pojo.User">
+		
+			select * from user where id=#{id}
+	</select>
+	
+	<select id="getUserByUserName" parameterType="String" resultType="com.itheima.springMVC.pojo.User">
+			select * from user where username like '%${value}%'
+	</select>
+	
+	
+	<!-- useGeneratedKeys:使用自动增长      keyProperty与之配套使用：这里是user的主键 -->
+	<insert id="insertUser" parameterType="com.itheima.springMVC.pojo.User" 
+								useGeneratedKeys="true" keyProperty="id"> 
+		<!-- 
+			SELECT LAST_INSERT_ID():可以返回上一次插入信息的，id
+			selectKey:主键返回
+			keyProperty：user中的主键属性
+			resultType：主键类型
+			order：指selectKey何时执行，AFTER：insert插入之后执行，	BEFORE:之前就执行	
+		 -->
+		 <!-- <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>  -->
+	
+		INSERT INTO user VALUES (#{id},#{username},#{birthday},#{sex},#{address});
+
+	</insert>
+	
+
+
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+		namespace:命名空间，用于隔离sql语句，后续有重要作用
+		#{?}:点位符，相当于jdbc的？
+		${?}:字符串拼接指令，如果入参数为普通数据类型{ }内部只写value
+ -->
+<mapper namespace="com.itheima.springMVC.mapper.ItemsMapper">
+
+	<select id="getList" resultType="com.itheima.springMVC.pojo.Item">
+		select * from item
+	</select>
+	
+	<select id="getItemsById" parameterType="int" resultType="item">
+		select * from item where id=#{id}
+	</select>
+	
+	<update id="updateItems" parameterType="item">
+		update item set name=#{name},price=#{price},detail=#{detail},createtime=#{createtime}  
+		where id=#{id}
+	</update>
+	
+	<select id="getByIdNameList" parameterType="item" resultType="item">
+			select * from item
+			<where>
+				<if test="name!=null and name!=''">
+				  	name like '%${name}%'
+				</if>
+				<if test="id!=null and id!=''">
+					and id=#{id}
+				</if>
+			</where>
+	</select>
+	
+
+
+</mapper>
